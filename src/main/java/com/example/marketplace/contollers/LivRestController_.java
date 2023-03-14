@@ -82,8 +82,8 @@ public class LivRestController_ {
     @GetMapping("nombredelivraison")
     public int nbreliv(Long idlivreur){return livreurService.nbredelivraison(idlivreur);}
 
-    @GetMapping("test/{idlivreur}")
-    public void activer(@PathVariable(value = "idlivreur")Long idlivreur){ livreurService.retournestatut(idlivreur);}
+   // @GetMapping("test/{idlivreur}")
+    //public void activer(@PathVariable(value = "idlivreur")Long idlivreur){ livreurService.retournestatut(idlivreur);}
 
     @GetMapping("anneedembauche/{id}")
     public int getdatedembauche(@PathVariable(value = "id") Long idLivreur) {return livreurService.getdatedembauche(idLivreur);}

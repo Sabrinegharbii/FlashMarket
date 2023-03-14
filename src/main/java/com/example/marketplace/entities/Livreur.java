@@ -1,13 +1,10 @@
 package com.example.marketplace.entities;
 
 import com.example.marketplace.enumerations.Statut_livreur;
-import com.example.marketplace.enumerations.Type_livraison;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import net.bytebuddy.build.ToStringPlugin;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 @Setter
@@ -25,8 +22,8 @@ public class Livreur {
     float salaire;
 //   float bonus;
    // float penaliser;
-  //  float latitude;
-    //float longitude;
+    String latitude;
+    String longitude;
     Integer Nbrelivraison;
     String origin;
     String destination;

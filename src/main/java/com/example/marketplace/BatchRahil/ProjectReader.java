@@ -1,7 +1,6 @@
 package com.example.marketplace.BatchRahil;
 
 import com.example.marketplace.entities.Charity;
-import com.example.marketplace.services.ICharityServ;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;

@@ -101,6 +101,9 @@ Set<Intervention> interuser;
     @JsonIgnore
     private Livreur livreur;
 
+    @ManyToOne @JsonIgnore
+    Currency currency;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "users" ,cascade = CascadeType.ALL)
     Set<Rating> ratings;
