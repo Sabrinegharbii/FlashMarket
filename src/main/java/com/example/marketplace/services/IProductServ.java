@@ -15,10 +15,10 @@ public interface IProductServ extends Serializable {
 
     void deleteProduct(Integer id);
 
-    public NutriscoreCategorie NutriscoreCategorie(int idProduit);
+    public String NutriscoreCategorie(int idProduit);
     public List<Product> filterByPrice(Double price);
 
     public String showAlert();
     public List<Product> getProductsBeforeOfExpiration();
-    public Product addAndassignProductTCatalogue(Product p, Integer idCatalogue);
+    public Product addAndassignProductToMarket(Product p, Integer idMarket);
 }

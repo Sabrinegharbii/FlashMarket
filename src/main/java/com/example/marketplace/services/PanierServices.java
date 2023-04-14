@@ -83,7 +83,7 @@ private final IUserRepository userRepository;
         panierRepo.deleteById(idPanier);
 
     }
-    @Scheduled(cron="*/10 * * * * * ")
+    //@Scheduled(cron="*/10 * * * * * ")
     public void romoveListPanier(){
       // Panier panier=new Panier();
      //   LocalDate datePanier = new java.sql.Date(panier.getDatePanier().getTime()).toLocalDate();

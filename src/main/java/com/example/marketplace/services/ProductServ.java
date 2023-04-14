@@ -1,17 +1,14 @@
 package com.example.marketplace.services;
 
-import com.example.marketplace.entities.Catalogue;
+import com.example.marketplace.entities.Market;
 import com.example.marketplace.entities.Product;
-import com.example.marketplace.entities.Rating;
-import com.example.marketplace.entities.User;
 import com.example.marketplace.enumerations.NutriscoreCategorie;
-import com.example.marketplace.repository.ICatalogueRepo;
+import com.example.marketplace.repository.IMarketRepository;
 import com.example.marketplace.repository.IProductRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,10 +19,11 @@ import java.util.Set;
 @AllArgsConstructor
 @Slf4j
 public class ProductServ implements IProductServ {
-    private final ICatalogueRepo iCatalogueRepo;
+
 
     IProductRepo iProductRepo;
-    ICatalogueRepo catalogueRepo;
+    IMarketRepository marketRepository;
+
 
     @Override
     public Product addProduct(Product product) {
@@ -122,13 +120,9 @@ public class ProductServ implements IProductServ {
         return pnew;
     }
 
-    public Product addAndassignProductTCatalogue(Product p, Integer idCatalogue) {
-        iProductRepo.save(p);
-        Catalogue catalogue = iCatalogueRepo.findById(idCatalogue).get();
-        Set<Product> productList = new HashSet<>();
-        productList.add(p);
-        catalogue.setProducts(productList);
-        catalogueRepo.save(catalogue);
+    public Product addAndassignProductToMarket(Product p, Integer idMarket) {
+        Market market = marketRepository.findById(idMarket).orElse(null);
+        p.setMarket(market);
         return iProductRepo.save(p);
     }
 }

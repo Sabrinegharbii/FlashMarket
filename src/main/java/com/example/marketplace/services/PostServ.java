@@ -148,7 +148,7 @@ public class PostServ implements IPostServ {
         }
         return x;
     }
-   @Scheduled(cron = "*/10 * * * * *")
+   //@Scheduled(cron = "*/10 * * * * *")
     @Override
     public String ArchiverAutomatique() {
         for (Post post : iPostRepo.findAll()) {

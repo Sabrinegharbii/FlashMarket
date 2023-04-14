@@ -59,9 +59,9 @@ public class ProductController {
     public List<Product> getProductsBefore3DaysOfExpiration() {
         return iProductServ.getProductsBeforeOfExpiration();
     }
-    @PutMapping("/addAndassignProductToCataloque/{idCataloque}")
-    Product addAndassignProductTCatalogue(@RequestBody Product P,@PathVariable("idCataloque") Integer idCatalogue){
-        return iProductServ.addAndassignProductTCatalogue(P,idCatalogue);
+    @PutMapping("/addAndassignProductToMarket/{idMarket}")
+    Product addAndassignProductToMarket(@RequestBody Product P,@PathVariable("idMarket") Integer idMarket){
+        return iProductServ.addAndassignProductToMarket(P,idMarket);
     }
 
 
