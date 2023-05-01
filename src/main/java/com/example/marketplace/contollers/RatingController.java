@@ -40,9 +40,11 @@ public class RatingController {
         iRatingServ.deleteRating(id);
     }
 
-    @PutMapping("/addAndassignRatingToProductAndUser/{idProd}/{idUser}")
-    Rating addAndassignRatingToProductAndUser(@RequestBody Rating r,@PathVariable("idProd") Integer idProd,@PathVariable("idUser") Integer idUser){
-        return iRatingServ.addAndassignRatingToProductAndUser(r,idProd,idUser);
+    @GetMapping("/addAndassignRatingToProductAndUser/{idProd}/{idUser}/{r}")
+    Rating addAndassignRatingToProductAndUser(@PathVariable("idProd") Integer idProd,@PathVariable("idUser") Integer idUser,@PathVariable Integer r){
+       Rating rr=new Rating();
+       rr.setNote(r);
+        return iRatingServ.addAndassignRatingToProductAndUser(rr,idProd,idUser);
     }
     @GetMapping("RatingCalcul/{idProduit}")
     public float RatingCalcul(@PathVariable("id") Integer id){

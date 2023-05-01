@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests().antMatchers( "/swagger-ui/index.html").permitAll()
 
-            .antMatchers("/auth/signup","/auth/signin","/auth/verification","/auth/forgotPassword","/auth/resetPassword","http://localhost:8188/SpringMVC/auth/signin","http://localhost:8188/SpringMVC/auth/verification").permitAll()
+            .antMatchers("**","/auth/signup","/auth/signin","/auth/verification","/auth/forgotPassword","/auth/resetPassword","http://localhost:8188/SpringMVC/auth/signin","http://localhost:8188/SpringMVC/auth/verification").permitAll()
 
             .antMatchers("/auth/signup","/auth/signin","/auth/verification","/auth/forgotPassword","/auth/resetPassword","http://localhost:8188/SpringMVC/auth/signin","**","http://localhost:8188/SpringMVC/auth/verification").permitAll()
 

@@ -21,4 +21,6 @@ public interface IProductServ extends Serializable {
     public String showAlert();
     public List<Product> getProductsBeforeOfExpiration();
     public Product addAndassignProductToMarket(Product p, Integer idMarket);
+
+    List<Product> GetProductOfMarket(Integer id);
 }
