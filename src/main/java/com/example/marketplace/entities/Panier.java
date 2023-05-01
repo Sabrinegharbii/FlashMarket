@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -19,8 +20,8 @@ public class Panier {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Integer idPanier;
     float prixTotal;
-    @Temporal(TemporalType.DATE)
-    Date datePanier;
+
+    LocalDateTime datePanier=LocalDateTime.now();;
     @Temporal(TemporalType.DATE)
     Date dateExpirationPanier;
 

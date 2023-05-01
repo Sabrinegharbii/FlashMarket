@@ -6,15 +6,21 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/LigneCommande")
+@CrossOrigin(origins = "*")
+
 public class LigneCommandeController {
 private final ILigneCommandeServices ligneCommandeServices;
 
     @Operation(description = "Add lignecommande")
-    @PutMapping("/add/{idPa}/{idPr}")
-    LigneCommande addLigneCommande(@RequestBody LigneCommande ligneCommande,@PathVariable("idPa") Integer IdPanier,@PathVariable("idPr") Integer IdProduct){
+    @PostMapping("/add/{idPa}/{idPr}/{qty}")
+    LigneCommande addLigneCommande(@PathVariable("idPa") Integer IdPanier,@PathVariable("idPr") Integer IdProduct,@PathVariable("qty") Integer qty){
+        LigneCommande ligneCommande=new LigneCommande();
+        ligneCommande.setQuantiteProduit(qty);
         return ligneCommandeServices.affecterpanierAndProductlignedecommande(ligneCommande,IdPanier,IdProduct);
 
     }
@@ -30,5 +36,17 @@ private final ILigneCommandeServices ligneCommandeServices;
     LigneCommande getLigneCommande(@PathVariable("id") Integer id){
 
         return ligneCommandeServices.retrieveLigneCommande(id);
+    }
+    @Operation (description = "afficher ligne Commande")
+    @GetMapping("/getlistLigne/{id}")
+    List<LigneCommande> getLigneCommandeByPanier(@PathVariable("id") Integer id){
+
+        return ligneCommandeServices.retrieveLigneCommandeByPanier(id);
+    }
+    @Operation (description = "Delete ligneCommande")
+    @DeleteMapping("/delete/{id}")
+    void deletePanier(@PathVariable("id") Integer id){
+
+        ligneCommandeServices.removeLigneCommande(id);
     }
 }
