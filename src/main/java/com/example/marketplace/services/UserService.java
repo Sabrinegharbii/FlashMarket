@@ -4,9 +4,13 @@ import com.example.marketplace.entities.User;
 import com.example.marketplace.repository.IUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.xml.ws.Response;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +26,11 @@ public class UserService  implements IUserServices {
     private final RandomString randomString;
 
     private final PasswordEncoder encoder;
+
+    @Override
+    public User getbyUsername(String username){
+        return userRepository.findUserByUsername(username);
+    }
 
 
     @Override
@@ -62,18 +71,18 @@ public class UserService  implements IUserServices {
         return userRepository.rechercheDynamique(search);
     }
     @Override
-    public String Verification( String email,String code){
+    public ResponseEntity Verification(String email, String code){
         User u = userRepository.findByEmail(email);
         if (u == null){
-            return "Wrong or Unexisting Email";
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else if (u.getStatus()){
-            return "User already Verified";
+            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         } else if ((u.getCode()).equals(code)){
             u.setStatus(true);
             u.setCode(null);
             userRepository.save(u);
-            return "Your account is now Verified you can proceed to Logging In";
-        } else return "Verification Code is Incorrect";
+            return null;
+        } else return new ResponseEntity<>(HttpStatus.CONFLICT);
 
 
     }
@@ -89,32 +98,32 @@ public class UserService  implements IUserServices {
 
     }
 @Override
-    public String forgotPassword(String email){
+    public ResponseEntity forgotPassword(String email){
         User u = userRepository.findByEmail(email);
         if (u == null ){
-            return "User not found ! ";
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         else {
             String code = randomString.randomGeneratedString(8);
             u.setCode(code);
             userRepository.save(u);
             mailerService.sendEmail(email, "Account Recovery", "Please use this code :  " + code + "  to recover your account !  ");
-            return "Recovery Code sent successfully to your Email ! ";
+            return null;
         }
 
 }
 
-public String resetPassword(String verifCode,String newPass){
+public ResponseEntity resetPassword(String verifCode, String newPass){
         User u = userRepository.findByCode(verifCode);
     if (u == null ){
-        return "Wrong Code ! ";
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     else {
         u.setPassword(encoder.encode(newPass));
         u.setCode(null);
         userRepository.save(u);
     }
-    return "Your password is Changed Successfully ! Please Proceed to Logging In " ;
+    return null;
 
 }
 

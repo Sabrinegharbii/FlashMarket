@@ -67,17 +67,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/auth/signup","/auth/signin","/auth/verification","/auth/forgotPassword","/auth/resetPassword","http://localhost:8188/SpringMVC/auth/signin","**","http://localhost:8188/SpringMVC/auth/verification").permitAll()
 
 
-            .antMatchers("/auth/signup","/auth/signin","/auth/verification","/auth/forgotPassword","/auth/resetPassword","http://localhost:8188/SpringMVC/auth/signin","http://localhost:8188/SpringMVC/auth/verification","**").permitAll()
+            .antMatchers("/auth/signup","/auth/signin","/auth/verification","/auth/forgotPassword","/auth/resetPassword","http://localhost:8188/SpringMVC/auth/signin","**","http://localhost:8188/SpringMVC/auth/verification","**").permitAll()
 
             .antMatchers("/auth/signup","/auth/signin","/auth/verification","/auth/forgotPassword","/auth/resetPassword","http://localhost:8188/SpringMVC/auth/signin","**","http://localhost:8188/SpringMVC/auth/verification").permitAll()
 
-            .antMatchers("/auth/signup","/auth/signin","/auth/verification","/auth/forgotPassword","/auth/resetPassword","http://localhost:8188/SpringMVC/auth/signin","http://localhost:8188/SpringMVC/auth/verification","**").permitAll()
+            .antMatchers("/auth/signup","http://localhost:8188/SpringMVC/user/all","/auth/signin","/auth/verification","/auth/forgotPassword","/auth/resetPassword","http://localhost:8188/SpringMVC/auth/signin","http://localhost:8188/SpringMVC/auth/verification","**").permitAll()
 
 
 
 
             .antMatchers("/v2/api-docs", "/v3/api-docs", "/configuration/**","/swagger**/**", "/webjars/**").permitAll()
             .antMatchers("/test/**").permitAll()
+            .antMatchers("**").permitAll()
             .anyRequest().authenticated();
 
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

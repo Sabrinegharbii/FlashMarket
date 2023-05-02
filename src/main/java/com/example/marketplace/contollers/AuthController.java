@@ -31,8 +31,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/auth")
 @CrossOrigin(origins = "*")
+@RequestMapping("/auth")
+
 public class AuthController {
 
   final AuthenticationManager authenticationManager;
@@ -86,10 +87,19 @@ public class AuthController {
     }
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
+        if(signUpRequest.getUsername() == null){
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(signUpRequest.getEmail() == null){
+
+            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+        }
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+//                    ResponseEntity
+//                    .badRequest()
+//                    .body(new MessageResponse("Error: Username is already taken!"));
         }
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
@@ -109,7 +119,7 @@ public class AuthController {
      user.setPassword(encoder.encode(signUpRequest.getPassword()));
         LocalDateTime d = LocalDateTime.now();
      user.setCreatedAt(d);
-        String code = randomString.randomGeneratedString(8);
+        String code = randomString.randomGeneratedString(6);
      user.setCode(code);
         mailerService.sendEmail(user.getEmail(),"Account Creation"," Hello "+user.getFirstName()+" "+user.getLastName()+"\n Your account is almost created, please Login and write this code in the right field to complete your inscription !\n Your code is :"+ code);
     user.setStatus(false);
@@ -157,15 +167,17 @@ public class AuthController {
 
 
     @PostMapping("/verification")
-    String verifyUser(@RequestBody VerificationRequest verificationRequest){
+    public ResponseEntity verifyUser(@RequestBody VerificationRequest verificationRequest){
         return userServices.Verification(verificationRequest.getEmail(),verificationRequest.getCode());
-    }
+        }
+
     @PostMapping("/forgotPassword")
-    String forgotPassword(@RequestBody ForgotPassword forgotPassword) {
+    ResponseEntity forgotPassword(@RequestBody ForgotPassword forgotPassword) {
+
         return userServices.forgotPassword(forgotPassword.getEmail());
     }
     @PostMapping("/resetPassword")
-    String resetPassword(@RequestBody ResetPassword resetPassword) {
+    ResponseEntity resetPassword(@RequestBody ResetPassword resetPassword) {
         return userServices.resetPassword(resetPassword.getVerificationCode(),resetPassword.getNewPassword());
     }
 

@@ -16,6 +16,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RequestMapping("/user")
 
@@ -25,7 +26,8 @@ public class UserRestController {
     private final IUserServices userServices;
     private final IUserRepository userRepository;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
+    // @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(description = "Retrieve all users")
     @GetMapping("/all")
     List<User> getAllUsers(){
@@ -33,7 +35,16 @@ public class UserRestController {
         return userServices.retrieveAllUsers();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(description = "Retrieve by Username")
+    @GetMapping("/getusername/{usr}")
+    User getUsername(@PathVariable("usr") String username){
+
+        return userServices.getbyUsername(username);
+    }
+
+
+
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation (description = "Retrieve User")
     @GetMapping("/get/{id}")
     User getUser(@PathVariable("id") Integer idUser){

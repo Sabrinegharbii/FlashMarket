@@ -59,7 +59,7 @@ public class ContractRestController {
            Contract c = u.getMarket().getContract();
             return contractServices.updateContract(c,monthsNumber);
         }
-        else return "Market Not found For this User";
+        else return "Market Not found For this User"    ;
     }
 
     @Operation (description = "Delete contract")

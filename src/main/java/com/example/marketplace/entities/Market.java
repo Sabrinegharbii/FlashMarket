@@ -26,7 +26,7 @@ public class Market implements Serializable {
     @JsonIgnore
     @OneToOne(mappedBy = "market", cascade = CascadeType.ALL)
     private Contract contract;
-    @JsonIgnore
+
     @OneToOne
     private User user;
     @JsonIgnore
