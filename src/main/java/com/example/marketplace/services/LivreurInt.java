@@ -25,7 +25,9 @@ public interface LivreurInt extends Serializable {
         ////////////////////
     public double calculateDistance(String origin, String destination) throws ApiException, InterruptedException, IOException ;
 
-    public void retournestatut(Long idlivreur);
+    public void retournestatut(String x2,String y2) throws IOException;
     public void ajouterunbonusencasdelivadd(Long idLivreur);
 
+    public Livreur lemeilleureemployedeumois();
+    public Livreur ajouterlivreur(Livreur livreur );
     }
