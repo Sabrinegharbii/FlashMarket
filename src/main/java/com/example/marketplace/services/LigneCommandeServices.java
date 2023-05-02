@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -26,7 +27,9 @@ public class LigneCommandeServices implements ILigneCommandeServices {
     public LigneCommande retrieveLigneCommande(Integer id) {
         return ligneCommandeRepo.findById(id).orElse(null);
     }
-
+public List<LigneCommande> listeligencommande(){
+        return ligneCommandeRepo.findAll();
+}
     @Override
     public LigneCommande updateLigneCommande(LigneCommande ligneCommande) {
         return ligneCommandeRepo.save(ligneCommande);

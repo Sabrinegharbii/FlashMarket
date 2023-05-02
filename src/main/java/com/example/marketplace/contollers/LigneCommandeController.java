@@ -6,9 +6,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/LigneCommande")
+@CrossOrigin(origins = "*")
 public class LigneCommandeController {
 private final ILigneCommandeServices ligneCommandeServices;
 
@@ -18,7 +21,10 @@ private final ILigneCommandeServices ligneCommandeServices;
         return ligneCommandeServices.affecterpanierAndProductlignedecommande(ligneCommande,IdPanier,IdProduct);
 
     }
-
+@GetMapping("/listelgcommandes")
+public List<LigneCommande> listeligencommande(){
+       return ligneCommandeServices.listeligencommande();
+}
     @Operation (description = "Update ligneCommande")
     @PutMapping("/update")
     LigneCommande updateLigneCommande(@RequestBody LigneCommande ligneCommande){

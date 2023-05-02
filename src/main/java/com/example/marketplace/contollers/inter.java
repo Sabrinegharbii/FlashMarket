@@ -1,15 +1,14 @@
 package com.example.marketplace.contollers;
 
-import com.example.marketplace.entities.Intervention;
-import com.example.marketplace.entities.Product;
-import com.example.marketplace.entities.Reclamation;
-import com.example.marketplace.entities.User;
+import com.example.marketplace.Playload.Response.MessageResponse;
+import com.example.marketplace.entities.*;
 import com.example.marketplace.enumerations.Statuss;
 import com.example.marketplace.enumerations.Sujetrec;
 import com.example.marketplace.repository.IUserRepository;
 import com.example.marketplace.services.IRecService;
 import com.example.marketplace.services.InterventionServ;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -19,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class inter {
     @Autowired
     InterventionServ interserv;
@@ -26,11 +26,20 @@ public class inter {
     IRecService recserv;
     @Autowired
     IUserRepository userRepository;
+    @PostMapping("/assignadmintointer")
+    public ResponseEntity<?> addandassignuserintervention(@RequestBody Intervention inter)  {
+        try {
+            //   String username = principal.getName();
+            //     User u = userRepository.findByUsername(username).orElse(null);
+            //   Integer id = u.getId();
+            Integer id=1;
+            return ResponseEntity.ok(new MessageResponse(interserv.ajouterintervention(id,inter)));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(new MessageResponse("Erreur"));
+        }
 
-    @PostMapping("/addintervention")
-    public Intervention addintervention(@RequestBody Intervention u ) {
-        return interserv.ajouterintervention(u);
     }
+
     @DeleteMapping("/supprimerinter/{id}")
     public  void delete(@PathVariable("id") Long id ){
         interserv.deleteByIdd(id);
@@ -44,16 +53,40 @@ public class inter {
         interserv.updateintervention( id,dureeinter);
 
     }
-    @PutMapping("/updateintervention2/{id}")
-    public Intervention updateintervention2 ( @PathVariable Long id,@RequestBody Intervention  i){
-        return interserv.updateintervention2(id,i);
+    @PutMapping("/updateintervention2")
+    public Intervention updateintervention2 (@RequestBody Intervention  i){
+        return interserv.updateintervention2(i);
     }
+    @GetMapping("/listecmd/{userid}")
+    public List<LigneCommande> listedelgcmddunuser( @PathVariable  Integer userid) {
+        return recserv.listedelgcmddunuser(userid);
 
-    @PostMapping("/addreclamation")
-    public Reclamation addreclamation(@RequestBody Reclamation i ) {
+    }
+    @GetMapping("/getnbrinterventionsdechaqueuser")
+    public List<String> listedesinterdechaqueuser(){
+        return recserv.listedesinterdechaqueuser();
+    }
+    @PostMapping("/addAndAssignPostLiketoPostAndUser/{idligcmd}")
+    public ResponseEntity<?> addandassignlgcmdtouser(@RequestBody Reclamation rec, @PathVariable("idligcmd") Integer idligcmd)  {
+        try {
+         //   String username = principal.getName();
+       //     User u = userRepository.findByUsername(username).orElse(null);
+         //   Integer id = u.getId();
+Integer id=1;
+            return ResponseEntity.ok(new MessageResponse(recserv.ajouterreclamation(rec, idligcmd, id)));
+        }catch (Exception e){
+           return ResponseEntity.badRequest().body(new MessageResponse("Erreur"));
+        }
 
+    }
+  //  @PostMapping("/addreclamation/{idligcmd}/{iduser}")
+    //public String addreclamation(@RequestBody Reclamation i,@PathVariable Integer idligcmd,@PathVariable Integer iduser ) {return recserv.ajouterreclamation(i,idligcmd,iduser);    }
 
-        return recserv.ajouterreclamation(i);    }
+ @GetMapping("/recuser/{userrr_id}")
+        public List<Reclamation> userconeccte(@PathVariable("userrr_id") int userrr_id){
+     return recserv.afficherrecdeuserx(userrr_id);
+        }
+
     @DeleteMapping("/reclamationsupprimer/{id}")
     public  void deleterec(@PathVariable("id") Long id ){
         recserv.deleteByIdrec(id);
@@ -62,9 +95,9 @@ public class inter {
     public List<Reclamation> listereclamations(){
         return recserv.listedesreclamations();
     }
-    @GetMapping("/listeproduitsimilaires/{idproduitrec}")
-    public List<Product> listeproduits(@PathVariable int idproduitrec ){
-        return  recserv.afficherproduitssimilaires(idproduitrec);
+    @GetMapping("/listeproduitsimilaires/{idrec}")
+    public Set<Product> listeproduits(@PathVariable Long idrec ){
+        return  recserv.afficherproduitssimilaires(idrec);
 
     }
     //@PutMapping("/updaterrecwithquery/{idrec}/{ticketstatus}")
@@ -72,18 +105,18 @@ public class inter {
      //   recserv.updatereclamation( idrec,ticketstatus);
 
     //}
-    @PutMapping("/updaterecwithrec/{idrec}")
-    public Reclamation updatereccc ( @PathVariable Long idrec,@RequestBody Reclamation  i){
-        return recserv.updatereclamation2(idrec,i);
+    @PutMapping("/updaterecwithrec")
+    public Reclamation updatereccc ( @RequestBody Reclamation  i){
+        return recserv.updatereclamation2(i);
     }
     @GetMapping("/nombredereclamationlivreur")
     public int nbrrec(Long iduser){
         return   recserv.countReclamation(iduser);
     }
 
-    @GetMapping ("/calculsalaire/{iduser}")
-    public double retournesalaire (@PathVariable Long iduser ){
-        return   recserv.retournesalaire(iduser);
+    @GetMapping ("/calculsalaire/{idrec}")
+    public Livreur retournesalaire (@PathVariable Long idrec ){
+        return   recserv.retournesalaire(idrec);
     }
     //@GetMapping("/listeproduits/{idproduitreclame}")
     //public List<Product> afficherproduitsimilaire(@PathVariable int idproduitreclame){
@@ -109,27 +142,36 @@ public class inter {
          recserv.affecetruserlreclamation(idrec,iduser);
 
     }
+
+    @GetMapping("/nbrderecpourchaqueproduit")
+    List<String> nbrrecpourchaqueproduit(){
+        return recserv.nombredereclamationpourchaqueproduit();
+    }
     @GetMapping("/nombredereclamationsproduit/{description}/{id}")
     Integer nombredereclamationdunproduit(@PathVariable Sujetrec description,@PathVariable Integer id){
         return recserv.nombredereclamationdunproduit(description,id);
     }
     @GetMapping("/prixproduits/{description}/{idprodrec}")
-   public  void prixproduit (@PathVariable Sujetrec description,@PathVariable Integer idprodrec){
-        recserv.prixproduit(  description, idprodrec);
+   public  Product prixproduit (@PathVariable Sujetrec description,@PathVariable Integer idprodrec){
+      return   recserv.prixproduit(  description, idprodrec);
    }
-    //@GetMapping("/listemotspositifs/{filePath}")
-    //public   List<List<String>> readExcellistemotspositifs(String filePath) throws IOException {
-    //    return recserv.readExcel(filePath);
-    //}
+    @GetMapping("/listemotspositifs/{filePath}")
+    public  Set<String> readExcellistemotspositifs(String filePath) throws IOException {
+        return recserv.readExcel(filePath);
+    }
     @GetMapping("scoresatisfaction/{filepath}/{filepathneutre}/{filepathnegatifs}")
-    public  String retournescoredesatisfactionclient1(String filepath,String filepathneutre,String filepathnegatifs) throws IOException {
+    public  List<String> retournescoredesatisfactionclient1(String filepath,String filepathneutre,String filepathnegatifs) throws IOException {
         return   recserv.retournescoredesatisfactionclient(filepath,filepathneutre,filepathnegatifs);
     }
 
     @GetMapping("lemeilleuremployebrusque")
-    public String lemeilleureemployedeumois(){
+    public User   lemeilleureemployedeumois(){
         return   recserv.lemeilleureemployedeumois();
 
+    }
+    @GetMapping("returnbyid/{idrec}")
+    public Reclamation reurnbyid(@PathVariable Long idrec){
+        return recserv.returnrecbyid(idrec);
     }
     @GetMapping("affecterinterrec/{idinterv}/{idrec}")
     public void affecter(@PathVariable Long idinterv,@PathVariable Long idrec){

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,7 +32,7 @@ public class LigneCommande {
 /////reclamation////
     @OneToMany(mappedBy="lgcommande")
     @JsonIgnore
-                    Set<Reclamation> reclgcommande;
+    private Set<Reclamation> reclgcommande;
 
 
 }

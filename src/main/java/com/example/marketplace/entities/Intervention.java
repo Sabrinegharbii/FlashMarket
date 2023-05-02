@@ -29,10 +29,10 @@ public class Intervention implements Serializable {
 
 
     @OneToMany(mappedBy="intervention",cascade = CascadeType.ALL)
-    @JsonIgnore
+@JsonIgnore
     Set<Reclamation> recinter;
 
     @ManyToOne
-    @JsonIgnore
+@JsonIgnore
     User userrrr;
 }
