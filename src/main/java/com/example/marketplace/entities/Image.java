@@ -15,6 +15,17 @@ public class Image {
     @OneToOne
     Post post;
 
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+    @JsonIgnore
+    @OneToOne
+    Product  product;
+
+    public Product getProduct() {
+        return product;
+    }
+
     public Image() {
     }
 

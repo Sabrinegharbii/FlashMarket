@@ -13,6 +13,8 @@ import java.util.List;
 @RequestMapping("/LigneCommande")
 @CrossOrigin(origins = "*")
 
+
+
 public class LigneCommandeController {
 private final ILigneCommandeServices ligneCommandeServices;
 
@@ -24,7 +26,10 @@ private final ILigneCommandeServices ligneCommandeServices;
         return ligneCommandeServices.affecterpanierAndProductlignedecommande(ligneCommande,IdPanier,IdProduct);
 
     }
-
+@GetMapping("/listelgcommandes")
+public List<LigneCommande> listeligencommande(){
+       return ligneCommandeServices.listeligencommande();
+}
     @Operation (description = "Update ligneCommande")
     @PutMapping("/update")
     LigneCommande updateLigneCommande(@RequestBody LigneCommande ligneCommande){

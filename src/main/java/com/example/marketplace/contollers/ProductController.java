@@ -1,20 +1,30 @@
 package com.example.marketplace.contollers;
 
+import com.example.marketplace.Playload.Response.MessageResponse;
 import com.example.marketplace.entities.Product;
 import com.example.marketplace.services.IProductServ;
+import com.example.marketplace.services.IimageSer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
+
 @CrossOrigin(origins = "*")
+
+@CrossOrigin(origins="*")
+
 @RequiredArgsConstructor
 @RequestMapping("/Product")
 
 public class ProductController {
     final IProductServ iProductServ;
+    final IimageSer iimageSer;
 
 
     @GetMapping("/allproducts")
@@ -27,7 +37,7 @@ public class ProductController {
         return iProductServ.addProduct(p);
     }
 
-    @PatchMapping("/updateProduct")
+    @PutMapping("/updateProduct")
     Product updateProduct(@RequestBody Product p) {
         return iProductServ.updateProduct(p);
     }
@@ -53,8 +63,8 @@ public class ProductController {
     }
 
     @GetMapping("/alert")
-    public String showAlert() {
-        return iProductServ.showAlert();
+    public ResponseEntity showAlert() {
+        return ResponseEntity.ok(new MessageResponse(iProductServ.showAlert()));
     }
     @GetMapping("/remise")
     public List<Product> getProductsBefore3DaysOfExpiration() {
@@ -63,6 +73,19 @@ public class ProductController {
     @PutMapping("/addAndassignProductToMarket/{idMarket}")
     Product addAndassignProductToMarket(@RequestBody Product P,@PathVariable("idMarket") Integer idMarket){
         return iProductServ.addAndassignProductToMarket(P,idMarket);
+    }
+    @PutMapping("/addImageAndAssigToPost/{idProduct}")
+    public ResponseEntity<?> addAndAssignPostToUser(@RequestPart MultipartFile image, @PathVariable("idProduct") Integer idP) throws IOException {
+        try{iimageSer.AddandAssign(image,idP);
+            return ResponseEntity.ok(new MessageResponse("image is added successfully!"));
+        }catch ( Exception e){
+            return ResponseEntity.badRequest().body(new MessageResponse("Erreur"));
+        }
+    }
+    @GetMapping("/productofMarket/{idU}")
+    List<Product> GetProductOfMarket(@PathVariable Integer idU){
+
+        return iProductServ.GetProductOfMarket(idU);
     }
 
 

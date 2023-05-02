@@ -8,6 +8,7 @@ public interface ILigneCommandeServices {
     LigneCommande retrieveLigneCommande(Integer id);
 
     LigneCommande updateLigneCommande(LigneCommande ligneCommande);
+List<LigneCommande> listeligencommande();
 
   //  LigneCommande affecterpanierAndProductlignedecommande(LigneCommande ligneCommande, Integer idpanier, Integer idProduct);
 

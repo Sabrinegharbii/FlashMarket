@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,6 +20,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
+
 public class Reclamation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +32,9 @@ public class Reclamation implements Serializable {
     @Enumerated(EnumType.STRING)
     private Statuss ticketstatus ;
     @Temporal(TemporalType.DATE)
-    private Date createdDate;
+    private Date  createdDate;
     private String priorite;
-    private String reponsealareclamation  ;
+        private String reponsealareclamation  ;
     @ManyToOne
     @JsonIgnore
     User userrr;

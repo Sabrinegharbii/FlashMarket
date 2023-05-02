@@ -13,6 +13,7 @@ public interface IimageSer extends Serializable {
     List<Image> list();
     Optional<Image> getOne(int id);
     ResponseEntity<?> AddandAssig(MultipartFile imagen,Integer id) throws IOException;
+    ResponseEntity<?> AddandAssign(MultipartFile image,Integer id) throws IOException;
     void delete(int id);
     boolean exists(int id);
 

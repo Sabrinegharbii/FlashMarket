@@ -21,8 +21,12 @@ public class InterventionServ  implements  IInterventionServ{
     @Autowired
     IUserRepository userRepository;
     @Override
-    public Intervention ajouterintervention(Intervention i ){
-        return interrepo.save(i);
+    public String ajouterintervention(Integer idadmin,Intervention i ){
+        User admin= userRepository.findById(idadmin).orElse(null);
+        i.setUserrrr(admin);
+        interrepo.save(i);
+        String lf="added";
+        return lf;
     }
     @Override
     public void deleteByIdd(Long id) {
@@ -37,17 +41,25 @@ public class InterventionServ  implements  IInterventionServ{
     public  void updateintervention(Long id,Integer dureeinter){
         interrepo.updateintervention(id,dureeinter);}
     @Override
-    public Intervention updateintervention2 (Long id, Intervention  i) {
-        if (interrepo.findById(id).isPresent()){
-            Intervention interv = interrepo.findById(id).get();
+    public Intervention updateintervention2 ( Intervention  i) {
+        Intervention interventionExistante = interrepo.findById(i.getId()).orElse(null);
+        User user = interventionExistante.getUserrrr();
 
-            interv.setDureeinter(i.getDureeinter());
-            interv.setDatedebinter(i.getDatedebinter());
-            Intervention updatedinterention = interrepo.save(interv);
-            return updatedinterention;
-        }else{
-            return null;
-        }
+            // Extraire la valeur actuelle de l'ID d'utilisateur
+
+
+            // Créer un nouvel objet d'intervention avec les valeurs modifiées
+            Intervention interventionModifiee = new Intervention();
+        interventionModifiee.setId(interventionExistante.getId());
+
+            interventionModifiee.setDescription(i.getDescription());
+            interventionModifiee.setDatedebinter(i.getDatedebinter());
+            interventionModifiee.setDureeinter(i.getDureeinter());
+            interventionModifiee.setUserrrr(user); // Réaffecter la valeur actuelle de l'ID d'utilisateur
+
+            return interrepo.save(interventionModifiee);
+
+
     }
     @Override
     public void affecteradminintervention(Integer idadmin,Long idinter){
