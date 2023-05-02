@@ -11,7 +11,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -31,15 +30,19 @@ public class CommandeServices implements ICommandeServices{
     private final ICommandeRepo commandeRepo;
     //private final ICharityRepo charityRepo;
     @Override
+    public List<Commande> getAllCommande(){
+        List<Commande> p = new ArrayList<>();
+        commandeRepo.findAll().forEach(p::add);
+        return p;
+    }
+
+    @Override
     public Commande addCommande(Commande commande, Integer iduser, Integer idligne) {
         LigneCommande ligneCommande=ligneCommandeRepo.findById(idligne).orElse(null);
         User user=userRepository.findById(iduser).orElse(null);
         Commande c= commandeRepo.save(commande);
-                                     /*Donnation of 1Dinar per Order*/
-       // SoldeDonnation donn = soldeDonnation.findById(idDonnation).orElse(null);
-
         ligneCommande.setCommande(c);
-                                 // c.setLigneCommandes((Set<LigneCommande>) ligneCommande);
+
         ligneCommandeRepo.save(ligneCommande);
         //donn.setCommandes((Set<Commande>) c);
 
@@ -52,12 +55,6 @@ public class CommandeServices implements ICommandeServices{
               else{
             f.setPrixFacture(ligneCommande.getPaniers().getPrixTotal()*ligneCommande.getQuantiteProduit());
                   }
-        //c.setFactureCommandes(f);
-
-        //donn.setDonnation((commande.getFactureCommandes().getPrixFacture())*0.02);  //=c.getFactureCommandes().getPrixFacture();
-                                 //donn.setDatedonnation(new Date());
-       // soldeDonnation.save(donn);
-       // c.setSoldeDonnation(donn);
         factureCommandeRepo.save(f);
 
       if(f.getPrixFacture()!=0){
@@ -97,14 +94,7 @@ public class CommandeServices implements ICommandeServices{
         }
         return reduction;
     }
-//        if (user.getPointsFidelite() >= 200) {//kol 200 points aandhom 40 euro
-//            user.setPointsFidelite(user.getPointsFidelite() - 200);
-//            user.getPanier().setBonus((int) (user.getPanier().getPrixTotal()- 40)); // Ajouter un bonus de 40€
-//            userRepository.save(user);
-//            return true;
-//        } else {
-//            return false; // Retourner false si l'utilisateur n'a pas suffisamment de points pour obtenir un bonus
-//        }
+
 
 @Override
     public int afficherPointsFidelite(Integer idu) {
@@ -149,23 +139,7 @@ public class CommandeServices implements ICommandeServices{
     }
 
 
-    ///Excel Charity
-//    public int calculateScore(List<String> rowData) {
-//        int score = 0;
-//        for (int i = 0; i < rowData.size(); i++) {
-//            if (i != SCORE_COLUMN_INDEX) { // exclure la colonne score elle-même
-//                String cellValue = rowData.get(i);
-//                if (cellValue != null && !cellValue.isEmpty()) {
-//                    try {
-//                        score += Integer.parseInt(cellValue);
-//                    } catch (NumberFormatException e) {
-//                        // ignorer les valeurs non numériques
-//                    }
-//                }
-//            }
-//        }
-//        return score;
-//    }
+
 
     public List<List<String>> readExcelcharitylist(String filePath) throws IOException {
 
@@ -251,4 +225,37 @@ public class CommandeServices implements ICommandeServices{
         }
         return addsimilarProduct;
     }
+
+
+
 }
+
+
+
+//        if (user.getPointsFidelite() >= 200) {//kol 200 points aandhom 40 euro
+//            user.setPointsFidelite(user.getPointsFidelite() - 200);
+//            user.getPanier().setBonus((int) (user.getPanier().getPrixTotal()- 40)); // Ajouter un bonus de 40€
+//            userRepository.save(user);
+//            return true;
+//        } else {
+//            return false; // Retourner false si l'utilisateur n'a pas suffisamment de points pour obtenir un bonus
+//        }
+
+
+///Excel Charity
+//    public int calculateScore(List<String> rowData) {
+//        int score = 0;
+//        for (int i = 0; i < rowData.size(); i++) {
+//            if (i != SCORE_COLUMN_INDEX) { // exclure la colonne score elle-même
+//                String cellValue = rowData.get(i);
+//                if (cellValue != null && !cellValue.isEmpty()) {
+//                    try {
+//                        score += Integer.parseInt(cellValue);
+//                    } catch (NumberFormatException e) {
+//                        // ignorer les valeurs non numériques
+//                    }
+//                }
+//            }
+//        }
+//        return score;
+//    }

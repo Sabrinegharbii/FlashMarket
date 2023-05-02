@@ -10,10 +10,14 @@ import com.example.marketplace.repository.IProductRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
+import java.util.*;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 
 @Service
 @AllArgsConstructor
@@ -56,21 +60,24 @@ public List<LigneCommande> listeligencommande(){
       panier1.setDateExpirationPanier(d);
       panier1.setPrixTotal((float) (panier1.getPrixTotal()+ product1.getPrice()));
         return ligneCommandeRepo.save(ligneCommande);
+         }
 
-
-
-
-
-//        Set<Product> products=new HashSet<>();
-     //
-//        ligneCommande.setProducts(products);
-//
-//        ligneCommande.setPaniers(panier1);
-//        Date d=new Date();
-//        panier1.setDateExpirationPanier(d);
-        //Commande commande1=commandeRepo.findById(ligneCommande.getCommande().getIdCommande()).orElse(null);
-        //ligneCommande.setCommande(commande1);
-
+    @Override
+    public List<LigneCommande> retrieveLigneCommandeByPanier(Integer id) {
+        Panier panier=panierRepo.findById(id).orElse(null);
+        List<LigneCommande> ligneCommandes= new ArrayList<>();
+        for(LigneCommande l :ligneCommandeRepo.findAll()){
+            if (l.getPaniers().getIdPanier()==id){
+                ligneCommandes.add(l);
+            }
+        } return ligneCommandes;
 
     }
+
+    @Override
+    public void removeLigneCommande(Integer id) {
+        ligneCommandeRepo.deleteById(id);
+    }
+
+
 }

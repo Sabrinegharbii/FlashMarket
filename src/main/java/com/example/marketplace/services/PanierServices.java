@@ -1,18 +1,15 @@
 package com.example.marketplace.services;
 
-import com.example.marketplace.entities.LigneCommande;
-import com.example.marketplace.entities.Panier;
-import com.example.marketplace.entities.Product;
-import com.example.marketplace.entities.User;
-import com.example.marketplace.repository.ILigneCommandeRepo;
-import com.example.marketplace.repository.IPanierRepo;
-import com.example.marketplace.repository.IProductRepo;
-import com.example.marketplace.repository.IUserRepository;
+import com.example.marketplace.entities.*;
+import com.example.marketplace.enumerations.Categorie;
+import com.example.marketplace.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -24,20 +21,20 @@ private final IPanierRepo panierRepo;
 private final IProductRepo productRepo;
 private final ILigneCommandeRepo ligneCommandeRepo;
 private final IUserRepository userRepository;
+final ICommandeRepo commandeRepo;
 
     @Override
-    public Panier addPanierandaffectoUser(Panier panier, Integer IdUser) {
+    public Panier addPanierandaffectoUser(Panier panier,Integer id) {
+        //Panier panier, Integer IdUser
 
-        User user=userRepository.findById(IdUser).orElse(null);
+        User user=userRepository.findById(id).orElse(null);
         System.out.println(user.getId());
         if(user.getPanier()==null) {
-         //   System.out.println("awel mara");
             panier.setUser(user);
             panier.setRemise(0.2f);
             panier.setPrixTotal(0);
             return panierRepo.save(panier);
         }
-    //    System.out.println("deja");
         return null;
     }
     /*@Override
@@ -68,6 +65,7 @@ private final IUserRepository userRepository;
    }
 
 
+
     @Override
     public Panier updatePanier(Panier panier) {
         return panierRepo.save(panier);
@@ -76,6 +74,40 @@ private final IUserRepository userRepository;
     @Override
     public Panier retrievePanier(Integer idPanier) {
         return panierRepo.findById(idPanier).orElse(null);
+    }
+ @Override
+    public Panier findPanier(Integer id) {
+        return panierRepo.findPanierByUserId(id);
+    }
+
+    @Override
+    public List<Product> similarProduct(Integer idprodSimilar, Integer idC) {
+
+        Product similar = productRepo.findById(idprodSimilar).orElse(null);
+        Commande c=commandeRepo.findById(idC).orElse(null);
+        LocalDate currentDate = LocalDate.now();
+        LocalDate dateCommande=new java.sql.Date(c.getDateCommande().getTime()).toLocalDate();
+        // Convertir la date de la commande en objet LocalDate
+
+        long differenceInMonths = ChronoUnit.MONTHS.between(dateCommande, currentDate);
+
+        double prixsimilar = similar.getPrice();
+        /*declaration*/
+        double bornInf=prixsimilar-20;
+        double bornSup=prixsimilar+15;
+        Categorie categorieSimilar = similar.getCategorie();
+        List<Product> prod = new ArrayList<>();
+        productRepo.findAll().forEach(prod::add);
+        List<Product> addsimilarProduct = new ArrayList<>();
+        for (Product product : prod) {
+            ///njareb nshouf lazm tkoun f ekher 3 mois l commande
+            if(differenceInMonths <= 3){
+                if (product.getId() != similar.getId() && product.getCategorie().equals(categorieSimilar) &&(product.getPrice()>=bornInf || product.getPrice()<=bornSup )) {
+
+                    addsimilarProduct.add(product);
+                }}
+        }
+        return addsimilarProduct;
     }
 
     @Override

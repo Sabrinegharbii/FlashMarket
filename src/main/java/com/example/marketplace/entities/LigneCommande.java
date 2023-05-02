@@ -20,19 +20,23 @@ public class LigneCommande {
     Integer idLigneCommande;
     Integer quantiteProduit;
     @JsonIgnore
+
     @ManyToOne
     Commande commande;
-    @JsonIgnore
+@JsonIgnore
     @ManyToOne
     Panier paniers;
-    @JsonIgnore
     @ManyToMany
     private Set<Product> products ;
 
 /////reclamation////
     @OneToMany(mappedBy="lgcommande")
+
+                    Set<Reclamation> reclgcommande;
+
     @JsonIgnore
     private Set<Reclamation> reclgcommande;
+
 
 
 }

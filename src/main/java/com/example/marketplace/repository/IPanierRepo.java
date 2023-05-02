@@ -13,7 +13,7 @@ public interface IPanierRepo extends CrudRepository<Panier,Integer> {
      public List<Panier> listPanier();
 
 
-
+Panier findPanierByUserId(Integer userId);
 
 //    @Query("select count(p.prixTotal) from Panier p where p.idPanier = :IdP")
 //    public float prixPanier(Integer IdP);

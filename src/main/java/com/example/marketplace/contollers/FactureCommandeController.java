@@ -27,6 +27,8 @@ import java.io.ByteArrayOutputStream;
 @RequiredArgsConstructor
 @RequestMapping("/facturePanier")
 @Tag(name = "facture panier")
+@CrossOrigin(origins = "*")
+
 public class FactureCommandeController {
 
     private final IFactureCommandeServices factureCommandeServices;

@@ -15,4 +15,8 @@ List<LigneCommande> listeligencommande();
     //LigneCommande affecterpanierAndProductlignedecommande(LigneCommande , Integer idpanier, Integer idProduct);
 
     LigneCommande affecterpanierAndProductlignedecommande(LigneCommande ligneCommande, Integer idpanier, Integer idProduct);
+
+    List<LigneCommande> retrieveLigneCommandeByPanier(Integer id);
+
+    void removeLigneCommande(Integer id);
 }

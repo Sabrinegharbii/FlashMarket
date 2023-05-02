@@ -14,7 +14,11 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+
+@CrossOrigin(origins = "*")
+
 @CrossOrigin(origins="*")
+
 @RequiredArgsConstructor
 @RequestMapping("/Product")
 

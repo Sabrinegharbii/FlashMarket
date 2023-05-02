@@ -2,6 +2,7 @@ package com.example.marketplace.contollers;
 
 import com.example.marketplace.services.PDFGeneratorServices;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,8 @@ import java.util.Date;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
+
 public class PDFExportController {
     private final PDFGeneratorServices pdfGeneratorServices;
     @GetMapping("/pdf/{id}/{idp}")

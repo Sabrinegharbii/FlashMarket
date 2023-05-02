@@ -1,6 +1,7 @@
 package com.example.marketplace.services;
 
 import com.example.marketplace.entities.Commande;
+import com.example.marketplace.entities.Post;
 import com.example.marketplace.entities.Product;
 import com.example.marketplace.entities.User;
 
@@ -9,7 +10,9 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ICommandeServices {
-    Commande addCommande(Commande commande, Integer iduser,Integer idligne);
+    //private final ICharityRepo charityRepo;
+
+    Commande addCommande(Commande commande, Integer iduser, Integer idligne);
 
     //private final ICharityRepo charityRepo;
     //Commande addCommande(Commande commande, Integer idLigne, User user, Integer idDonnation);
@@ -32,4 +35,6 @@ public interface ICommandeServices {
 
     ///produit similaires
     List<Product> similarProduct(Integer idprodSimilar, Integer idC);
+
+    List<Commande> getAllCommande();
 }

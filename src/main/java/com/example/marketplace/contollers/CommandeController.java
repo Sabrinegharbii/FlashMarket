@@ -1,9 +1,6 @@
 package com.example.marketplace.contollers;
 
-import com.example.marketplace.entities.Commande;
-import com.example.marketplace.entities.Panier;
-import com.example.marketplace.entities.Product;
-import com.example.marketplace.entities.User;
+import com.example.marketplace.entities.*;
 import com.example.marketplace.services.ICommandeServices;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,17 +9,27 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/Commande")
+@CrossOrigin(origins = "*")
 public class CommandeController {
     private final ICommandeServices commandeServices;
     @Operation(description = "Add commande")
-    @PutMapping("/add1/{idU}/{idl}")
-    Commande addCommande(@RequestBody Commande commande , @PathVariable("idU") Integer userId,@PathVariable("idl") Integer idligne){
-        return commandeServices.addCommande(commande,userId,idligne);
+    @GetMapping("/add1/{idU}/{idl}/{adr}")
+    Commande addCommande(@PathVariable("adr") String adresse ,@PathVariable("idU") Integer userId,@PathVariable("idl") Integer idligne){
+        Commande commande = new Commande();
+        Date date=new Date();
+        System.out.println("ccc");
+       // Random r = new Random();
+        commande.setAdressCommande(adresse);
+        commande.setDateCommande(date);
+//        commande.setNumCommande((long) (r.nextInt((10 - 1) + 1)));
+return commandeServices.addCommande(commande,userId,idligne);
 
 
     }
@@ -38,6 +45,10 @@ public class CommandeController {
     Commande getPanier(@PathVariable("id") Integer id){
 
         return commandeServices.retrieveCommande(id);
+    }
+    @GetMapping("/allcommande")
+    List<Commande> getAllCommande() {
+        return commandeServices.getAllCommande();
     }
 
     @Operation (description = "Delete Commande")
@@ -67,8 +78,9 @@ public class CommandeController {
         return commandeServices.readExcelcharitylist(filePath);
 
     }
-    @GetMapping("/similar/{idProduit}/{idCommande}")
-    public List<Product> similarProduct(@PathVariable("idProduit") Integer idprodSimilar, @PathVariable("idCommande")Integer idC){
-        return commandeServices.similarProduct(idprodSimilar,idC);
-    }
+//    @GetMapping("/similar/{idProduit}/{idCommande}")
+//    public List<Product> similarProduct(@PathVariable("idProduit") Integer idprodSimilar, @PathVariable("idCommande")Integer idC){
+//        return commandeServices.similarProduct(idprodSimilar,idC);
+//    }
+
     }

@@ -12,12 +12,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/LigneCommande")
 @CrossOrigin(origins = "*")
+
+
+
 public class LigneCommandeController {
 private final ILigneCommandeServices ligneCommandeServices;
 
     @Operation(description = "Add lignecommande")
-    @PutMapping("/add/{idPa}/{idPr}")
-    LigneCommande addLigneCommande(@RequestBody LigneCommande ligneCommande,@PathVariable("idPa") Integer IdPanier,@PathVariable("idPr") Integer IdProduct){
+    @PostMapping("/add/{idPa}/{idPr}/{qty}")
+    LigneCommande addLigneCommande(@PathVariable("idPa") Integer IdPanier,@PathVariable("idPr") Integer IdProduct,@PathVariable("qty") Integer qty){
+        LigneCommande ligneCommande=new LigneCommande();
+        ligneCommande.setQuantiteProduit(qty);
         return ligneCommandeServices.affecterpanierAndProductlignedecommande(ligneCommande,IdPanier,IdProduct);
 
     }
@@ -36,5 +41,17 @@ public List<LigneCommande> listeligencommande(){
     LigneCommande getLigneCommande(@PathVariable("id") Integer id){
 
         return ligneCommandeServices.retrieveLigneCommande(id);
+    }
+    @Operation (description = "afficher ligne Commande")
+    @GetMapping("/getlistLigne/{id}")
+    List<LigneCommande> getLigneCommandeByPanier(@PathVariable("id") Integer id){
+
+        return ligneCommandeServices.retrieveLigneCommandeByPanier(id);
+    }
+    @Operation (description = "Delete ligneCommande")
+    @DeleteMapping("/delete/{id}")
+    void deletePanier(@PathVariable("id") Integer id){
+
+        ligneCommandeServices.removeLigneCommande(id);
     }
 }
