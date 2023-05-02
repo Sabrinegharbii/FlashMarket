@@ -2,7 +2,9 @@ package com.example.marketplace.services;
 
 import com.example.marketplace.entities.Image;
 import com.example.marketplace.entities.Post;
+import com.example.marketplace.entities.Product;
 import com.example.marketplace.repository.IPostRepo;
+import com.example.marketplace.repository.IProductRepo;
 import com.example.marketplace.repository.ImageRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ public class ImageSer implements IimageSer{
     final CloudinaryService cloudinaryService;
     final ImageRepo imageRepo;
     final IPostRepo iPostRepo;
+    final IProductRepo  iProductRepo;
 
     @Override
     public List<Image> list() {
@@ -49,6 +52,19 @@ public class ImageSer implements IimageSer{
                 , (String) result.get("url"),
                 (String) result.get("public_id"));
         media.setPost(p);
+        imageRepo.save(media);
+        return null;
+    }
+    @Override
+    public ResponseEntity<?> AddandAssign(MultipartFile image,Integer id) throws IOException {
+        Product p=iProductRepo.findById(id).orElse(null);
+        Map result = cloudinaryService.upload(image);
+        BufferedImage bi = ImageIO.read(image.getInputStream());
+        Image media = new Image((String)
+                result.get("original_filename")
+                , (String) result.get("url"),
+                (String) result.get("public_id"));
+        media.setProduct(p);
         imageRepo.save(media);
         return null;
     }

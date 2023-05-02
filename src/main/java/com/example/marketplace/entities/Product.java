@@ -21,10 +21,10 @@ public class Product {
     private Integer id;
 
     private Float tauxRemise;
-
-    private  String image;
+    private String Description;
 
     private double price;
+    private String images;
 
 
     private LocalDate dateExpiration;
@@ -44,6 +44,9 @@ public class Product {
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
     private Set<LigneCommande>  ligneCommandes  ;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "product")
+    Image image;
 
 
 
