@@ -32,7 +32,7 @@ public class LigneCommande {
 /////reclamation////
     @OneToMany(mappedBy="lgcommande")
 
-                    Set<Reclamation> reclgcommande;
+
 
     @JsonIgnore
     private Set<Reclamation> reclgcommande;
